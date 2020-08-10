@@ -1,4 +1,5 @@
 #include "boxCollider.h"
+#include <iostream>
 
 BoxCollider::BoxCollider():Collider(ColliderType::box){
 	//Collider(ColliderType.box);
@@ -8,9 +9,9 @@ BoxCollider::BoxCollider():Collider(ColliderType::box){
 }
 BoxCollider::BoxCollider(double w,double l,double h):Collider(ColliderType::box){
 	//Collider(ColliderType.box);
-	normals[0]=new Vector3D(w,0.0,0.0);
-	normals[1]=new Vector3D(0.0,l,0.0);
-	normals[2]=new Vector3D(0.0,0.0,h);
+	normals[0]=new Vector3D(w/2,0.0,0.0);
+	normals[1]=new Vector3D(0.0,l/2,0.0);
+	normals[2]=new Vector3D(0.0,0.0,h/2);
 }
 BoxCollider::BoxCollider(Vector3D* a,Vector3D* b,Vector3D* c):Collider(ColliderType::box){
 	//Collider(ColliderType.box);
@@ -34,6 +35,7 @@ int BoxCollider::checkCollision(Vector3D* posA,Vector3D* angA,Collider* b,Vector
 }
 
 int BoxCollider::checkCollision(BoxCollider* a,Vector3D* posA,Vector3D* angA,BoxCollider* b,Vector3D* posB,Vector3D* angB){
+	std::cout<<"Box collision Check"<<std::endl;
 	//checking colision between two boxes
 	//check collision between all the faces
 	Vector3D* boxA=new Vector3D[3];
@@ -44,6 +46,9 @@ int BoxCollider::checkCollision(BoxCollider* a,Vector3D* posA,Vector3D* angA,Box
 	for(int i=0;i<3;i++){
 		boxB[i]=V3Drotate(*b->getNormals()[i],*angB);
 	}
+	std::cout<<"posA: ";
+	posA->display();
+	std::cout<<std::endl;
 	//check the edges of box A against the Sides of Box B
 	if(lineVsBox(boxA[0],*posA+boxA[0]+boxA[1]+boxA[2],*posA-boxA[0]+boxA[1]+boxA[2],boxB,posB))return 1;
 	if(lineVsBox(boxA[0],*posA+boxA[0]-boxA[1]+boxA[2],*posA-boxA[0]-boxA[1]+boxA[2],boxB,posB))return 2;
@@ -61,20 +66,20 @@ int BoxCollider::checkCollision(BoxCollider* a,Vector3D* posA,Vector3D* angA,Box
 	if(lineVsBox(boxA[2],*posA+boxA[2]-boxA[0]-boxA[1],*posA-boxA[2]-boxA[0]-boxA[1],boxB,posB))return 12;
 	
 	//check the edges of box B against the Sides of Box A
-	if(lineVsBox(boxA[0],*posA+boxA[0]+boxA[1]+boxA[2],*posA-boxA[0]+boxA[1]+boxA[2],boxA,posA))return 13;
-	if(lineVsBox(boxA[0],*posA+boxA[0]-boxA[1]+boxA[2],*posA-boxA[0]-boxA[1]+boxA[2],boxA,posA))return 14;
-	if(lineVsBox(boxA[0],*posA+boxA[0]+boxA[1]-boxA[2],*posA-boxA[0]+boxA[1]-boxA[2],boxA,posA))return 15;
-	if(lineVsBox(boxA[0],*posA+boxA[0]-boxA[1]-boxA[2],*posA-boxA[0]-boxA[1]-boxA[2],boxA,posA))return 16;
+	if(lineVsBox(boxB[0],*posB+boxB[0]+boxB[1]+boxB[2],*posB-boxB[0]+boxB[1]+boxB[2],boxA,posA))return 13;
+	if(lineVsBox(boxB[0],*posB+boxB[0]-boxB[1]+boxB[2],*posB-boxB[0]-boxB[1]+boxB[2],boxA,posA))return 14;
+	if(lineVsBox(boxB[0],*posB+boxB[0]+boxB[1]-boxB[2],*posB-boxB[0]+boxB[1]-boxB[2],boxA,posA))return 15;
+	if(lineVsBox(boxB[0],*posB+boxB[0]-boxB[1]-boxB[2],*posB-boxB[0]-boxB[1]-boxB[2],boxA,posA))return 16;
 	
-	if(lineVsBox(boxA[1],*posA+boxA[1]+boxA[0]+boxA[2],*posA-boxA[1]+boxA[0]+boxA[2],boxA,posA))return 17;
-	if(lineVsBox(boxA[1],*posA+boxA[1]-boxA[0]+boxA[2],*posA-boxA[1]-boxA[0]+boxA[2],boxA,posA))return 18;
-	if(lineVsBox(boxA[1],*posA+boxA[1]+boxA[0]-boxA[2],*posA-boxA[1]+boxA[0]-boxA[2],boxA,posA))return 19;
-	if(lineVsBox(boxA[1],*posA+boxA[1]-boxA[0]-boxA[2],*posA-boxA[1]-boxA[0]-boxA[2],boxA,posA))return 20;
+	if(lineVsBox(boxB[1],*posB+boxB[1]+boxB[0]+boxB[2],*posB-boxB[1]+boxB[0]+boxB[2],boxA,posA))return 17;
+	if(lineVsBox(boxB[1],*posB+boxB[1]-boxB[0]+boxB[2],*posB-boxB[1]-boxB[0]+boxB[2],boxA,posA))return 18;
+	if(lineVsBox(boxB[1],*posB+boxB[1]+boxB[0]-boxB[2],*posB-boxB[1]+boxB[0]-boxB[2],boxA,posA))return 19;
+	if(lineVsBox(boxB[1],*posB+boxB[1]-boxB[0]-boxB[2],*posB-boxB[1]-boxB[0]-boxB[2],boxA,posA))return 20;
 	
-	if(lineVsBox(boxA[2],*posA+boxA[2]+boxA[0]+boxA[1],*posA-boxA[2]+boxA[0]+boxA[1],boxA,posA))return 21;
-	if(lineVsBox(boxA[2],*posA+boxA[2]-boxA[0]+boxA[1],*posA-boxA[2]-boxA[0]+boxA[1],boxA,posA))return 22;
-	if(lineVsBox(boxA[2],*posA+boxA[2]+boxA[0]-boxA[1],*posA-boxA[2]+boxA[0]-boxA[1],boxA,posA))return 23;
-	if(lineVsBox(boxA[2],*posA+boxA[2]-boxA[0]-boxA[1],*posA-boxA[2]-boxA[0]-boxA[1],boxA,posA))return 24;
+	if(lineVsBox(boxB[2],*posB+boxB[2]+boxB[0]+boxB[1],*posB-boxB[2]+boxB[0]+boxB[1],boxA,posA))return 21;
+	if(lineVsBox(boxB[2],*posB+boxB[2]-boxB[0]+boxB[1],*posB-boxB[2]-boxB[0]+boxB[1],boxA,posA))return 22;
+	if(lineVsBox(boxB[2],*posB+boxB[2]+boxB[0]-boxB[1],*posB-boxB[2]+boxB[0]-boxB[1],boxA,posA))return 23;
+	if(lineVsBox(boxB[2],*posB+boxB[2]-boxB[0]-boxB[1],*posB-boxB[2]-boxB[0]-boxB[1],boxA,posA))return 24;
 	
 	//check if box A or B is inside eachother
 	//leaving out for now, might cause missed collisions with high speed collisions with low physics update rate
@@ -82,15 +87,53 @@ int BoxCollider::checkCollision(BoxCollider* a,Vector3D* posA,Vector3D* angA,Box
 }
 
 static bool lineVsBox(Vector3D line,Vector3D pointA,Vector3D pointB,Vector3D* normals,Vector3D* posB){
+	/*std::cout<<"lineVsBox:"<<std::endl<<"\t\tline: ";
+	line.display();
+	std::cout<<std::endl<<"\t\tpointA: ";
+	pointA.display();
+	std::cout<<std::endl<<"\t\tpointB: ";
+	pointB.display();
+	std::cout<<std::endl<<"\t\tnormals[0]: ";
+	normals[0].display();
+	std::cout<<std::endl<<"\t\tnormals[1]: ";
+	normals[1].display();
+	std::cout<<std::endl<<"\t\tnormals[2]: ";
+	normals[2].display();
+	std::cout<<std::endl<<"\t\tposB: ";
+	posB->display();
+	std::cout<<std::endl<<std::endl;*/
 	double temp;
-	double maxT=(pointA.x-pointB.x)/line.x;
-	for(int i=0;i<=3;i++){
+	double sideArea;
+	double interiorArea;
+	Vector3D point;
+	Vector3D diffrence=pointB-pointA;
+	double maxT=(line.x==0)?((line.y==0)?(diffrence.z/line.z):(diffrence.y/line.y)):(diffrence.x/line.x);
+	//std::cout<<"\t\tmaxT="<<maxT<<std::endl;
+	for(int i=0;i<3;i++){
 		temp=V3Ddot((normals[i]+(*posB))-pointA,normals[i])/V3Ddot(normals[i],line);
-		if((maxT<0)?(temp>=maxT && temp<=0):(temp>=0 && temp<=maxT)) return true;
+		//std::cout<<"\t\t pos normal["<<i<<"], temp="<<temp<<std::endl;
+		if((maxT<0)?(temp>=maxT && temp<=0):(temp>=0 && temp<=maxT)){
+			sideArea=V3Dcross(normals[(i+1)%3],normals[(i+2)%3]).mag()*4;
+			point=pointA+line.scale(temp);
+			interiorArea=V3Dcross(-normals[(i+1)%3],normals[(i+1)%3]+normals[(i+2)%3]-point+(*posB)+normals[i]).mag();
+			interiorArea+=V3Dcross(-normals[(i+2)%3],normals[(i+1)%3]+normals[(i+2)%3]-point+(*posB)+normals[i]).mag();
+			interiorArea+=V3Dcross(-normals[(i+1)%3],-normals[(i+1)%3]-normals[(i+2)%3]-point+(*posB)+normals[i]).mag();
+			interiorArea+=V3Dcross(normals[(i+2)%3],-normals[(i+1)%3]+normals[(i+2)%3]-point+(*posB)+normals[i]).mag();
+			if(interiorArea==sideArea) return true;
+		}
 	}
-	for(int i=0;i<=3;i++){
+	for(int i=0;i<3;i++){
 		temp=V3Ddot((-normals[i]+(*posB))-pointA,-normals[i])/V3Ddot(-normals[i],line);
-		if((maxT<0)?(temp>=maxT && temp<=0):(temp>=0 && temp<=maxT)) return true;
+		//std::cout<<"\t\t neg normal["<<i<<"], temp="<<temp<<std::endl;
+		if((maxT<0)?(temp>=maxT && temp<=0):(temp>=0 && temp<=maxT)){
+			sideArea=V3Dcross(normals[(i+1)%3],normals[(i+2)%3]).mag()*4;
+			point=pointA+line.scale(temp);
+			interiorArea=V3Dcross(-normals[(i+1)%3],normals[(i+1)%3]+normals[(i+2)%3]-point+(*posB)-normals[i]).mag();
+			interiorArea+=V3Dcross(-normals[(i+2)%3],normals[(i+1)%3]+normals[(i+2)%3]-point+(*posB)-normals[i]).mag();
+			interiorArea+=V3Dcross(-normals[(i+1)%3],-normals[(i+1)%3]-normals[(i+2)%3]-point+(*posB)-normals[i]).mag();
+			interiorArea+=V3Dcross(normals[(i+2)%3],-normals[(i+1)%3]+normals[(i+2)%3]-point+(*posB)-normals[i]).mag();
+			if(interiorArea==sideArea) return true;
+		}
 	}
 	return false;
 }

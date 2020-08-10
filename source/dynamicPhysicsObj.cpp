@@ -37,16 +37,20 @@ DynamicPhysicsObj::~DynamicPhysicsObj(){
 
 
 void DynamicPhysicsObj::update(PhysicsObj** collisionList,long collisionListSize,long currentNum,double deltaT){
+	int tmp=0;
 	//update all the values;
 	*velocity=*velocity+acceleration->scale(deltaT)+gravity->scale(deltaT);
 	*position=*position+velocity->scale(deltaT);
 	*rotation=*rotation+angularVelocity->scale(deltaT);
 	if(!velocity->isZero() || !angularVelocity->isZero()){
 		//check for collision
+		long i=0;
 		for(long i=0;i<collisionListSize;i++){
 			if(i!=currentNum){
-				if(checkCollision(collisionList[i]->getCollider(),collisionList[i]->getPosition(),collisionList[i]->getRotation())!=0){
+				if((tmp=checkCollision(collisionList[i]->getCollider(),collisionList[i]->getPosition(),collisionList[i]->getRotation()))!=0){
+					std::cout<<tmp;
 					this->uponCollision();
+					collisionList[i]->uponCollision();
 				}
 			}
 		}
