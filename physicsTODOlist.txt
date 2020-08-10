@@ -1,0 +1,9 @@
+Physics TODO list: (not in order)
+bounding spere optimisation
+box and sphere collision
+triangle based collider
+colision position calc
+have better collision info
+	impact speed
+	normal
+	WHAT ACTUALY COLLIED (Item ID?)
