@@ -1,6 +1,6 @@
 /******************************************************************************
 ** File: main.cpp
-** Project: 3D Collaborative Game
+** Project: 2D Collaborative Game
 ** Date Created: 4 July 2020
 ** Description: Holds the main function of the whole program
 ******************************************************************************/
@@ -23,11 +23,61 @@ using namespace std;
 #include "physicsTestKit.h"
 using namespace std;
 int main (int argc, char **argv) {
-	PhysicsObj** pObjs=new PhysicsObj*[2];
+	//testing the Collider::collideTwoPlanes function
+	cout<<"running..."<<endl;
+	Vector3D nA,pA,nB,pB,resualt;
+	for(nA.x=-2;nA.x<=2;nA.x++){
+		for(nA.y=-2;nA.y<=2;nA.y++){
+			for(nA.z=-2;nA.z<=2;nA.z++){
+				for(pA.x=-2;pA.x<=2;pA.x++){
+					for(pA.y=-2;pA.y<=2;pA.y++){
+						for(pA.z=-2;pA.z<=2;pA.z++){
+							for(nB.x=-2;nB.x<=2;nB.x++){
+		for(nB.y=-2;nB.y<=2;nB.y++){
+			for(nB.z=-2;nB.z<=2;nB.z++){
+				for(pB.x=-2;pB.x<=2;pB.x++){
+					for(pB.y=-2;pB.y<=2;pB.y++){
+						for(pB.z=-2;pB.z<=2;pB.z++){
+							//check for parallel planes
+							if(!V3DsameNormal(nA,nB)){
+								resualt=Collider::collideTwoPlanes(nA,pA,nB,pB);
+								//check if poit is on planes
+								if(abs(V3Ddot(nA,resualt-pA))>0.0000001 && abs(V3Ddot(nB,resualt-pB))>0.0000001){
+									cout<<"Error"<<endl;
+									nA.display();
+									cout<<endl;
+									pA.display();
+									cout<<endl;
+									nB.display();
+									cout<<endl;
+									pB.display();
+									cout<<endl;
+									resualt.display();
+									cout<<endl<<endl<<endl<<endl;
+									string finalTemp;
+									cin>>finalTemp;
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+						}
+					}
+				}
+			}
+			nA.display();
+			cout<<endl;
+		}
+	}
+	cout<<"done!"<<endl;
+	/*PhysicsObj** pObjs=new PhysicsObj*[2];
 	string tmp1="FallingBox";
-	DynamicTestObj* fallingBox=new DynamicTestObj(tmp1,new Vector3D(0.0,3,0.0),new SphereCollider(0.75));//BoxCollider(1.0,1.0,1.0));
+	DynamicTestObj* fallingBox=new DynamicTestObj(tmp1,new Vector2D(0.0,2,0.0),new SphereCollider(0.75));//BoxCollider(1.0,1.0,1.0));
 	string tmp2="StaticBox";
-	StaticTestObj* staticBox=new StaticTestObj(tmp2,new Vector3D(0.0,0.0,0.0),new SphereCollider(1.25));//BoxCollider(2.0,2.0,2.0));
+	StaticTestObj* staticBox=new StaticTestObj(tmp2,new Vector2D(0.0,0.0,0.0),new SphereCollider(1.25));//BoxCollider(2.0,2.0,2.0));
 	pObjs[0]=fallingBox;
 	pObjs[1]=staticBox;
 	for(int i=0;i<20;i++){
@@ -38,7 +88,7 @@ int main (int argc, char **argv) {
 		
 	}
 	delete fallingBox;
-	delete staticBox;
+	delete staticBox;*/
 	string finalTemp;
 	cin>>finalTemp;
 

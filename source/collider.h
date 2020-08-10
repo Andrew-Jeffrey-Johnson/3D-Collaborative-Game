@@ -13,6 +13,7 @@ class Collider{
 	virtual ~Collider();
 	ColliderType getColliderType();
 	virtual int checkCollision(Vector3D*,Vector3D*,Collider*,Vector3D*,Vector3D*);
+	static Vector3D collideTwoPlanes(Vector3D,Vector3D,Vector3D,Vector3D);
 };
 
 #endif

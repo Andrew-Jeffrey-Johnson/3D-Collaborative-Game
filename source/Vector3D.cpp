@@ -60,6 +60,10 @@ double Vector3D::mag(void){
 		return Vector3D(-x,-y,-z);
 	}
 	
+	bool Vector3D::operator==(const Vector3D& b){
+		return (x==b.x && y==b.y && z==b.z);
+	}
+	
 	bool Vector3D::isZero(){
 		return (x==0)&&(y==0)&&(z==0);
 	}
@@ -111,4 +115,10 @@ double Vector3D::mag(void){
 
 void Vector3D::display(){
 	std::cout<<"("<<this->x<<", "<<this->y<<" ,"<<this->z<<")";
+}
+
+bool V3DsameNormal(Vector3D a,Vector3D b){
+	a=a.unit();
+	b=b.unit();
+	return (abs(a.x)==abs(b.x) && abs(a.y)==abs(b.y) && abs(a.z)==abs(b.z));
 }

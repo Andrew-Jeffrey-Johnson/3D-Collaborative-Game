@@ -29,6 +29,7 @@ class Vector3D{
 	Vector3D operator+(const Vector3D&);
 	Vector3D operator-(const Vector3D&);
 	Vector3D operator-();
+	bool operator==(const Vector3D&);
 	
 	bool isZero();
 	
@@ -48,5 +49,7 @@ class Vector3D{
 	double V3Dangle(Vector3D,Vector3D);
 
 	Vector3D V3Drotate(Vector3D,Vector3D);
+	
+	bool V3DsameNormal(Vector3D,Vector3D);
 
 #endif

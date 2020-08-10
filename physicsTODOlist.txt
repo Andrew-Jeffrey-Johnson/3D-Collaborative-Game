@@ -2,7 +2,8 @@ Physics TODO list: (not in order)
 bounding spere optimisation
 box and sphere collision
 triangle based collider
-colision position calc
+collision position calc
+collision impact resualts
 have better collision info
 	impact speed
 	normal
