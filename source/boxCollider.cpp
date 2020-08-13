@@ -85,7 +85,6 @@ int BoxCollider::checkCollision(BoxCollider* a,Vector3D* posA,Vector3D* angA,Box
 	//leaving out for now, might cause missed collisions with high speed collisions with low physics update rate
 	return 0;
 }
-
 static bool lineVsBox(Vector3D line,Vector3D pointA,Vector3D pointB,Vector3D* normals,Vector3D* posB){
 	/*std::cout<<"lineVsBox:"<<std::endl<<"\t\tline: ";
 	line.display();
@@ -136,4 +135,58 @@ static bool lineVsBox(Vector3D line,Vector3D pointA,Vector3D pointB,Vector3D* no
 		}
 	}
 	return false;
+}
+
+ResolvedData BoxCollider::fixCollision(Vector3D pointA,Vector3D pointB,Vector3D line, Vector3D* velocity, Vector3D* normals, Vector3D* posB){
+	ResolvedData output=ResolvedData();
+	Vector3D movementPlaneNormal=V3Dcross(line,*velocity);
+	if(movementPlaneNormal.isZero()){
+		//line and velocity are pointing in the same direction
+		//TODO later
+	}
+	double shortestTime=INFINITY;
+	double tempTime;
+	Vector3D intersectPoint;
+	Vector3D intersectLine;
+	for(int i=0;i<3;i++){
+		if(V3DsameNormal(movementPlaneNormal,normals[i])){
+			//The planes are parallel and a collision is happening so the line must lie on plane
+			return output;
+		}else{
+			//this is probibly genaric case
+			intersectPoint=Collider::collideTwoPlanes(movementPlaneNormal,pointA,normals[i],normals[i]+(*posB));
+			intersectLine=V3Dcross(normals[i],movementPlaneNormal);
+			//check if the intersection line intersects the side
+			
+			//find distance between the the end points and the intersect line in the direction of velocity
+			if(line.x!=0){
+				tempTime=(intersectPoint.x-pointA.x);
+			}else if(line.y!=0){
+				
+			}
+		}
+	}
+	return output;
+}
+ResolvedData BoxCollider::fixCollision(BoxCollider* a,Vector3D* posA,Vector3D* angA,Vector3D* velA,BoxCollider*otherCollider,Vector3D* posB,Vector3D* angB){
+	Vector3D* boxA=new Vector3D[3];
+	for(int i=0;i<3;i++){
+		boxA[i]=V3Drotate(*a->getNormals()[i],*angA);
+	}
+	Vector3D* boxB=new Vector3D[3];
+	for(int i=0;i<3;i++){
+		boxB[i]=V3Drotate(*otherCollider->getNormals()[i],*angB);
+	}
+	return ResolvedData();
+}
+ResolvedData BoxCollider::fixCollision(Vector3D* posA,Vector3D* angA,Vector3D* velA,Collider* otherCollider,Vector3D* posB,Vector3D* rotB){
+	//figure out how to resolve the collision
+	switch(otherCollider->getColliderType()){
+		case ColliderType::box:
+			return fixCollision(this,posA,angA,velA,(BoxCollider*)otherCollider,posB,rotB);
+		default:
+			return ResolvedData();
+		
+	}
+	return ResolvedData();
 }
