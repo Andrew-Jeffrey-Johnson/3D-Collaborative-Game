@@ -22,10 +22,10 @@ DynamicPhysicsObj::DynamicPhysicsObj(Vector3D* position, Vector3D* velocity, Vec
 	this->acceleration=acceleration;
 	this->angularVelocity=angularVelocity;
 	this->gravity=gravity;
-	std::cout<<"pos (dyn):";
+	/*std::cout<<"pos (dyn):";
 	position->display();
 	gravity->display();
-	std::cout<<std::endl;
+	std::cout<<std::endl;*/
 }
 
 DynamicPhysicsObj::~DynamicPhysicsObj(){
@@ -48,7 +48,7 @@ void DynamicPhysicsObj::update(PhysicsObj** collisionList,long collisionListSize
 		for(long i=0;i<collisionListSize;i++){
 			if(i!=currentNum){
 				if((tmp=checkCollision(collisionList[i]->getCollider(),collisionList[i]->getPosition(),collisionList[i]->getRotation()))!=0){
-					std::cout<<tmp;
+					//std::cout<<tmp;
 					this->uponCollision();
 					collisionList[i]->uponCollision();
 				}

@@ -21,10 +21,29 @@ using namespace std;
 ** Post-Conditions: None
 ******************************************************************************/
 #include "physicsTestKit.h"
+#include "meshCollider.h"
+#include "svgEngine.h"
 using namespace std;
 int main (int argc, char **argv) {
+	//visual collisions
+	PhysicsObj** objs=(PhysicsObj**) malloc(sizeof(PhysicsObj*)*2);
+	Vector3D* zeroVector=new Vector3D(0,0,0);
+	StaticPhysicsObj* staObj=new StaticPhysicsObj(new Vector3D(0,-20,0), zeroVector,(Collider*)new MeshCollider(20));
+	DynamicPhysicsObj* dynObj=new DynamicPhysicsObj(new Vector3D(0,10.2,0),new Vector3D(0,10,0), zeroVector,zeroVector,zeroVector,zeroVector,(Collider*)new MeshCollider(10));
+	objs[0]=staObj;
+	objs[1]=dynObj;
+	SvgEngine* svg=new SvgEngine(objs,2);
+	double deltaT=0.001;
+	double time=0.0;
+	svg->genFrame(time);
+	for(int i=0;i<50;i++){
+		dynObj->update(objs,2,1,deltaT);
+		time+=deltaT;
+		svg->genFrame(time);
+	}
+	svg->genVideo();
 	//testing the Collider::collideTwoPlanes function
-	cout<<"running..."<<endl;
+	/*cout<<"running..."<<endl;
 	Vector3D nA,pA,nB,pB,resualt;
 	for(nA.x=-2;nA.x<=2;nA.x++){
 		for(nA.y=-2;nA.y<=2;nA.y++){
@@ -89,8 +108,8 @@ int main (int argc, char **argv) {
 	}
 	delete fallingBox;
 	delete staticBox;*/
-	string finalTemp;
-	cin>>finalTemp;
+	//string finalTemp;
+	//cin>>finalTemp;
 
 	return 0;
 }

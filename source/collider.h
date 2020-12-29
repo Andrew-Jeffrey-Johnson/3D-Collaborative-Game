@@ -2,6 +2,7 @@
 #define	COLLIDER_H
 
 #include "Vector3D.h"
+#include "globalPhysics.h"
 #include "colliderType.h"
 #include "resolvedData.h"
 
